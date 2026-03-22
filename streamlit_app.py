@@ -95,41 +95,37 @@ st.divider()
 st.subheader("🎯 Chunk Quality Metrics")
 col_left, col_right = st.columns(2)
 with col_left:
-    df_coherence = pd.DataFrame({
-        "Strategy": [STRATEGY_LABELS.get(s, s) for s in strategies],
-        "Coherence": pd.Series(
-            [float(eval_results[s]["semantic_coherence"]["mean_coherence"]) for s in strategies],
-            dtype=float
-        ),
-    })
-    fig1 = px.bar(
-        df_coherence,
-        x="Strategy",
-        y="Coherence",
+    fig1 = go.Figure(data=[
+        go.Bar(
+            x=[STRATEGY_LABELS.get(s, s) for s in strategies],
+            y=[float(eval_results[s]["semantic_coherence"]["mean_coherence"]) for s in strategies],
+            marker_color=["#378ADD", "#1D9E75", "#D85A30", "#7F77DD"],
+        )
+    ])
+    fig1.update_layout(
         title="Semantic coherence (higher = better)",
+        yaxis_range=[0, 1],
+        showlegend=False,
+        yaxis_title="Coherence",
     )
-    fig1.update_layout(showlegend=False, yaxis_range=[0, 1])
     fig1.add_hline(y=0.7, line_dash="dot", line_color="gray",
                    annotation_text="0.7 threshold")
-    st.write("Chart data:", df_coherence)
-
     st.plotly_chart(fig1, use_container_width=True)
 
 with col_right:
-    df_boundary = pd.DataFrame({
-        "Strategy": [STRATEGY_LABELS.get(s, s) for s in strategies],
-        "Boundary Score": pd.Series(
-            [float(eval_results[s]["boundary_quality"]["boundary_score"]) for s in strategies],
-            dtype=float
-        ),
-    })
-    fig2 = px.bar(
-        df_boundary,
-        x="Strategy",
-        y="Boundary Score",
+    fig2 = go.Figure(data=[
+        go.Bar(
+            x=[STRATEGY_LABELS.get(s, s) for s in strategies],
+            y=[float(eval_results[s]["boundary_quality"]["boundary_score"]) for s in strategies],
+            marker_color=["#378ADD", "#1D9E75", "#D85A30", "#7F77DD"],
+        )
+    ])
+    fig2.update_layout(
         title="Boundary quality (higher = more natural cuts)",
+        yaxis_range=[0, 1],
+        showlegend=False,
+        yaxis_title="Boundary Score",
     )
-    fig2.update_layout(showlegend=False, yaxis_range=[0, 1])
     st.plotly_chart(fig2, use_container_width=True)
 
 st.divider()
