@@ -96,43 +96,41 @@ st.subheader("🎯 Chunk Quality Metrics")
 col_left, col_right = st.columns(2)
 
 with col_left:
-    coherence_data = {
+    df_coherence = pd.DataFrame({
         "Strategy": [STRATEGY_LABELS.get(s, s) for s in strategies],
-        "Coherence": [
-            float(eval_results[s]["semantic_coherence"]["mean_coherence"])
-            for s in strategies
-        ],
-    }
+        "Coherence": pd.Series(
+            [float(eval_results[s]["semantic_coherence"]["mean_coherence"]) for s in strategies],
+            dtype=float
+        ),
+    })
     fig1 = px.bar(
-        coherence_data,
+        df_coherence,
         x="Strategy",
         y="Coherence",
         title="Semantic coherence (higher = better)",
     )
     fig1.update_layout(showlegend=False, yaxis_range=[0, 1])
-    fig1.add_hline(
-        y=0.7, line_dash="dot", line_color="gray",
-        annotation_text="0.7 threshold",
-    )
+    fig1.add_hline(y=0.7, line_dash="dot", line_color="gray",
+                   annotation_text="0.7 threshold")
     st.plotly_chart(fig1, use_container_width=True)
 
 with col_right:
-    boundary_data = {
+    df_boundary = pd.DataFrame({
         "Strategy": [STRATEGY_LABELS.get(s, s) for s in strategies],
-        "Boundary Score": [
-            float(eval_results[s]["boundary_quality"]["boundary_score"])
-            for s in strategies
-        ],
-    }
+        "Boundary Score": pd.Series(
+            [float(eval_results[s]["boundary_quality"]["boundary_score"]) for s in strategies],
+            dtype=float
+        ),
+    })
     fig2 = px.bar(
-        boundary_data,
+        df_boundary,
         x="Strategy",
         y="Boundary Score",
         title="Boundary quality (higher = more natural cuts)",
     )
     fig2.update_layout(showlegend=False, yaxis_range=[0, 1])
     st.plotly_chart(fig2, use_container_width=True)
-
+    
 st.divider()
 
 # ── Chunk Size Distribution ──────────────────────────────────────────
