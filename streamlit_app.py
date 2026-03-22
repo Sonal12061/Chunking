@@ -105,19 +105,14 @@ with col_left:
         ],
     }
     fig1 = px.bar(
-        coherence_data,
-        x="Strategy",
-        y="Coherence",
-        title="Semantic coherence (higher = better)",
-        color="Strategy",
-        color_discrete_map={
-            STRATEGY_LABELS.get(s, s): STRATEGY_COLORS[s]
-            for s in strategies
-        },
+    coherence_data,
+    x="Strategy",
+    y="Coherence",
+    title="Semantic coherence (higher = better)",
     )
     fig1.update_layout(showlegend=False, yaxis_range=[0, 1])
     fig1.add_hline(y=0.7, line_dash="dot", line_color="gray",
-                   annotation_text="0.7 threshold")
+                annotation_text="0.7 threshold")
     st.plotly_chart(fig1, use_container_width=True)
 
 with col_right:
@@ -129,15 +124,10 @@ with col_right:
         ],
     }
     fig2 = px.bar(
-        boundary_data,
-        x="Strategy",
-        y="Boundary Score",
-        title="Boundary quality (higher = more natural cuts)",
-        color="Strategy",
-        color_discrete_map={
-            STRATEGY_LABELS.get(s, s): STRATEGY_COLORS[s]
-            for s in strategies
-        },
+    boundary_data,
+    x="Strategy",
+    y="Boundary Score",
+    title="Boundary quality (higher = more natural cuts)",
     )
     fig2.update_layout(showlegend=False, yaxis_range=[0, 1])
     st.plotly_chart(fig2, use_container_width=True)
