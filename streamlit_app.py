@@ -99,10 +99,11 @@ with col_left:
     coherence_data = {
         "Strategy": [STRATEGY_LABELS.get(s, s) for s in strategies],
         "Coherence": [
-            eval_results[s]["semantic_coherence"]["mean_coherence"]
+            float(eval_results[s]["semantic_coherence"]["mean_coherence"])
             for s in strategies
         ],
     }
+    
     fig1 = px.bar(
     coherence_data,
     x="Strategy",
@@ -118,7 +119,7 @@ with col_right:
     boundary_data = {
         "Strategy": [STRATEGY_LABELS.get(s, s) for s in strategies],
         "Boundary Score": [
-            eval_results[s]["boundary_quality"]["boundary_score"]
+            float(eval_results[s]["boundary_quality"]["boundary_score"])
             for s in strategies
         ],
     }
