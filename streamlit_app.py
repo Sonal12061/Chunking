@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import os
 
 st.set_page_config(
     page_title="Chunking Strategy Comparison",
@@ -15,10 +16,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 LOG_PATHS = {
-    "eval": "logs/eval_results.json",
-    "retrieval": "logs/retrieval_results.json",
-    "chunks": "logs/chunks_summary.json",
+    "eval": os.path.join(BASE_DIR, "logs", "eval_results.json"),
+    "retrieval": os.path.join(BASE_DIR, "logs", "retrieval_results.json"),
+    "chunks": os.path.join(BASE_DIR, "logs", "chunks_summary.json"),
 }
 
 STRATEGY_COLORS = {
