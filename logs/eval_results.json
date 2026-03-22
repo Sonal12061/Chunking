@@ -1,0 +1,104 @@
+{
+  "fixed": {
+    "chunk_count": 738,
+    "size_stats": {
+      "mean": 509.97,
+      "std": 28.28,
+      "min": 46,
+      "max": 512,
+      "total_chunks": 738
+    },
+    "boundary_quality": {
+      "good_start_ratio": 0.0583,
+      "good_end_ratio": 0.0217,
+      "boundary_score": 0.04
+    },
+    "semantic_coherence": {
+      "mean_coherence": 0.3861,
+      "std_coherence": 0.1169,
+      "min_coherence": 0.1297
+    },
+    "overlap_ratio": {
+      "total_chars": 376358,
+      "overlap_ratio": 0.9997
+    }
+  },
+  "recursive": {
+    "chunk_count": 1313,
+    "size_stats": {
+      "mean": 307.88,
+      "std": 151.06,
+      "min": 45,
+      "max": 512,
+      "total_chunks": 1313
+    },
+    "boundary_quality": {
+      "good_start_ratio": 0.0526,
+      "good_end_ratio": 0.4387,
+      "boundary_score": 0.2456
+    },
+    "semantic_coherence": {
+      "mean_coherence": 0.3658,
+      "std_coherence": 0.1072,
+      "min_coherence": 0.1105
+    },
+    "overlap_ratio": {
+      "total_chars": 404244,
+      "overlap_ratio": 0.9997
+    }
+  },
+  "semantic": {
+    "chunk_count": 2238,
+    "size_stats": {
+      "mean": 150.61,
+      "std": 83.75,
+      "min": 5,
+      "max": 1242,
+      "total_chunks": 2238
+    },
+    "boundary_quality": {
+      "good_start_ratio": 0.8995,
+      "good_end_ratio": 0.9973,
+      "boundary_score": 0.9484
+    },
+    "semantic_coherence": {
+      "mean_coherence": 0.9822,
+      "std_coherence": 0.0928,
+      "min_coherence": 0.3953
+    },
+    "overlap_ratio": {
+      "total_chars": 337066,
+      "overlap_ratio": 0.9996
+    }
+  },
+  "parent_child": {
+    "chunk_count": 3454,
+    "size_stats": {
+      "mean": 118.02,
+      "std": 19.5,
+      "min": 4,
+      "max": 128,
+      "total_chunks": 3454
+    },
+    "boundary_quality": {
+      "good_start_ratio": 0.0588,
+      "good_end_ratio": 0.0197,
+      "boundary_score": 0.0392
+    },
+    "semantic_coherence": {
+      "mean_coherence": 0.5234,
+      "std_coherence": 0.4056,
+      "min_coherence": -0.0286
+    },
+    "overlap_ratio": {
+      "total_chars": 407636,
+      "overlap_ratio": 0.9997
+    }
+  },
+  "_winners": {
+    "boundary_quality": "semantic",
+    "semantic_coherence": "semantic",
+    "lowest_overlap": "semantic",
+    "most_consistent_size": "parent_child"
+  }
+}

@@ -1,0 +1,42 @@
+data:
+  articles:
+    - "Artificial intelligence"
+    - "World War II"
+    - "Climate change"
+    - "Python (programming language)"
+    - "Renaissance"
+  raw_path: data/articles.json
+  random_seed: 42
+
+chunking:
+  fixed:
+    chunk_size: 512
+    chunk_overlap: 50
+  recursive:
+    chunk_size: 512
+    chunk_overlap: 50
+    separators: ["\n\n", "\n", ". ", " ", ""]
+  semantic:
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    breakpoint_threshold: 0.7   # cosine similarity below this = topic shift
+    min_chunk_size: 100
+    max_chunk_size: 1000
+
+retrieval:
+  db_path: logs/chromadb
+  top_k: 5
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+evaluation:
+  metrics:
+    - chunk_size_stats      # mean, std, min, max chunk sizes
+    - boundary_quality      # does chunk start/end at natural boundary?
+    - semantic_coherence    # cosine similarity within chunk
+    - overlap_ratio         # how much content is duplicated
+  results_path: logs/eval_results.json
+
+dashboard:
+  port: 8501
+
+logging:
+  log_path: logs/run_log.json
