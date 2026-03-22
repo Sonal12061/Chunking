@@ -68,15 +68,6 @@ st.caption(f"Last updated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}")
 # Load data
 eval_results = load_json(LOG_PATHS["eval"])
 
-# Temporary debug — remove after fixing
-st.write("DEBUG PATH:", LOG_PATHS["eval"])
-st.write("DEBUG KEYS:", list(eval_results.keys()) if eval_results else "EMPTY")
-if eval_results:
-    for k in eval_results:
-        if not k.startswith("_"):
-            st.write(f"DEBUG {k}:", eval_results[k].get("semantic_coherence", "MISSING"))
-retrieval_results = load_json(LOG_PATHS["retrieval"])
-chunks_summary = load_json(LOG_PATHS["chunks"])
 
 if not eval_results:
     st.warning(
