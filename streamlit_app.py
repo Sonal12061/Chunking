@@ -1,13 +1,12 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List
 
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-import os
 
 st.set_page_config(
     page_title="Chunking Strategy Comparison",
@@ -63,11 +62,12 @@ if st.sidebar.button("🔄 Refresh"):
 
 # Header
 st.title("📚 Chunking Strategy Comparison Dashboard")
-st.caption(f"Last updated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}")
+st.caption(f"Last updated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
 
 # Load data
 eval_results = load_json(LOG_PATHS["eval"])
-
+retrieval_results = load_json(LOG_PATHS["retrieval"])
+chunks_summary = load_json(LOG_PATHS["chunks"])
 
 if not eval_results:
     st.warning(
@@ -78,7 +78,7 @@ if not eval_results:
 strategies = [k for k in eval_results if not k.startswith("_")]
 winners = eval_results.get("_winners", {})
 
-# ── KPI Row ────────────────────────────────────────────────────────────
+# ── KPI Row ──────────────────────────────────────────────────────────
 st.subheader("📊 Overview")
 cols = st.columns(4)
 for i, strategy in enumerate(strategies):
@@ -91,7 +91,7 @@ for i, strategy in enumerate(strategies):
 
 st.divider()
 
-# ── Coherence + Boundary Bar Charts ───────────────────────────────────
+# ── Coherence + Boundary Bar Charts ─────────────────────────────────
 st.subheader("🎯 Chunk Quality Metrics")
 col_left, col_right = st.columns(2)
 
@@ -103,16 +103,17 @@ with col_left:
             for s in strategies
         ],
     }
-    
     fig1 = px.bar(
-    coherence_data,
-    x="Strategy",
-    y="Coherence",
-    title="Semantic coherence (higher = better)",
+        coherence_data,
+        x="Strategy",
+        y="Coherence",
+        title="Semantic coherence (higher = better)",
     )
     fig1.update_layout(showlegend=False, yaxis_range=[0, 1])
-    fig1.add_hline(y=0.7, line_dash="dot", line_color="gray",
-                annotation_text="0.7 threshold")
+    fig1.add_hline(
+        y=0.7, line_dash="dot", line_color="gray",
+        annotation_text="0.7 threshold",
+    )
     st.plotly_chart(fig1, use_container_width=True)
 
 with col_right:
@@ -124,17 +125,17 @@ with col_right:
         ],
     }
     fig2 = px.bar(
-    boundary_data,
-    x="Strategy",
-    y="Boundary Score",
-    title="Boundary quality (higher = more natural cuts)",
+        boundary_data,
+        x="Strategy",
+        y="Boundary Score",
+        title="Boundary quality (higher = more natural cuts)",
     )
     fig2.update_layout(showlegend=False, yaxis_range=[0, 1])
     st.plotly_chart(fig2, use_container_width=True)
 
 st.divider()
 
-# ── Chunk Size Distribution ────────────────────────────────────────────
+# ── Chunk Size Distribution ──────────────────────────────────────────
 st.subheader("📏 Chunk Size Distribution")
 
 size_records = []
@@ -156,7 +157,7 @@ fig3 = go.Figure()
 for _, row in df_sizes.iterrows():
     strategy_key = next(
         (k for k, v in STRATEGY_LABELS.items() if v == row["Strategy"]),
-        row["Strategy"]
+        row["Strategy"],
     )
     fig3.add_trace(go.Bar(
         name=row["Strategy"],
@@ -172,12 +173,11 @@ fig3.update_layout(
     yaxis_title="Characters",
 )
 st.plotly_chart(fig3, use_container_width=True)
-
 st.dataframe(df_sizes, use_container_width=True, hide_index=True)
 
 st.divider()
 
-# ── Winners Table ──────────────────────────────────────────────────────
+# ── Winners Table ────────────────────────────────────────────────────
 st.subheader("🏆 Winners by Metric")
 
 winner_rows = [
@@ -198,7 +198,7 @@ st.dataframe(
 
 st.divider()
 
-# ── Retrieval Results ──────────────────────────────────────────────────
+# ── Retrieval Results ────────────────────────────────────────────────
 st.subheader("🔍 Retrieval Comparison")
 
 if retrieval_results:
@@ -206,7 +206,6 @@ if retrieval_results:
         "Select a query to compare retrieval results:",
         options=list(retrieval_results.keys()),
     )
-
     if query:
         cols = st.columns(len(strategies))
         for i, strategy in enumerate(strategies):
@@ -227,7 +226,7 @@ else:
 
 st.divider()
 
-# ── Footer ─────────────────────────────────────────────────────────────
+# ── Footer ───────────────────────────────────────────────────────────
 st.caption(
     "Chunking Strategies RAG | Wikipedia dataset | "
     "github.com/Sonal12061/chunking-strategies-rag | "
