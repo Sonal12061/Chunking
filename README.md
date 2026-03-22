@@ -155,7 +155,7 @@ chunking-strategies-rag/
 ## Links
 
 - 🚀 Live dashboard: [huggingface.co/spaces/Sonal1288/chunking](https://huggingface.co/spaces/Sonal1288/chunking)
-- 💻 GitHub: [github.com/Sonal12061/chunking-strategies-rag](https://github.com/Sonal12061/chunking-strategies-rag)
+- 💻 GitHub: [github.com/Sonal12061/chunking-strategies-rag](https://github.com/Sonal12061/chunking)
 
 ---
 
