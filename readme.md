@@ -1,3 +1,14 @@
+---
+title: Chunking Strategies RAG
+emoji: 📚
+colorFrom: blue
+colorTo: purple
+sdk: streamlit
+sdk_version: 1.30.0
+app_file: dashboard/app.py
+pinned: true
+---
+
 # Chunking Strategies for RAG Pipelines
 
 A systematic comparison of four chunking strategies for 
@@ -126,6 +137,7 @@ python run_comparison.py
 
 # 4. Launch dashboard
 streamlit run dashboard/app.py
+"github.com/Sonal12061/chunking | huggingface.co/spaces/sonal1288/chunking"
 ```
 
 ---

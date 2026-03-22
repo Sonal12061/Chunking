@@ -237,5 +237,6 @@ st.divider()
 # ── Footer ─────────────────────────────────────────────────────────────
 st.caption(
     "Chunking Strategies RAG | Wikipedia dataset | "
-    "github.com/Sonal12061/chunking-strategies-rag"
+    "github.com/Sonal12061/chunking-strategies-rag | "
+    "huggingface.co/spaces/Sonal1288/chunking"
 )
