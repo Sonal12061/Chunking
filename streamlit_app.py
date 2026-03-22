@@ -94,7 +94,6 @@ st.divider()
 # ── Coherence + Boundary Bar Charts ─────────────────────────────────
 st.subheader("🎯 Chunk Quality Metrics")
 col_left, col_right = st.columns(2)
-
 with col_left:
     df_coherence = pd.DataFrame({
         "Strategy": [STRATEGY_LABELS.get(s, s) for s in strategies],
@@ -112,6 +111,8 @@ with col_left:
     fig1.update_layout(showlegend=False, yaxis_range=[0, 1])
     fig1.add_hline(y=0.7, line_dash="dot", line_color="gray",
                    annotation_text="0.7 threshold")
+    st.write("Chart data:", df_coherence)
+
     st.plotly_chart(fig1, use_container_width=True)
 
 with col_right:
@@ -130,7 +131,7 @@ with col_right:
     )
     fig2.update_layout(showlegend=False, yaxis_range=[0, 1])
     st.plotly_chart(fig2, use_container_width=True)
-    
+
 st.divider()
 
 # ── Chunk Size Distribution ──────────────────────────────────────────
