@@ -11,11 +11,9 @@ pinned: true
 
 # Chunking Strategies for RAG Pipelines
 
-A systematic comparison of four chunking strategies for 
-Retrieval-Augmented Generation (RAG) pipelines, evaluated on 
-5 Wikipedia articles (339,712 chars · 52,212 words) across 
-semantic coherence, boundary quality, chunk size consistency, 
-and overlap ratio.
+🚀 **[Live Dashboard](https://huggingface.co/spaces/Sonal1288/chunking)** — explore results without running any code.
+
+A systematic comparison of four chunking strategies for Retrieval-Augmented Generation (RAG) pipelines, evaluated on 5 Wikipedia articles (339,712 chars · 52,212 words) across semantic coherence, boundary quality, chunk size consistency, and overlap ratio.
 
 ---
 
@@ -29,6 +27,7 @@ and overlap ratio.
 | Parent-Child | 3,454 | 118 chars | 0.5234 | 0.0392 |
 
 ### Winners by metric
+
 | Metric | Winner | Why |
 |---|---|---|
 | Best semantic coherence | **Semantic** | Splits at topic shifts — sentences within chunks are topically related |
@@ -37,52 +36,41 @@ and overlap ratio.
 | Most consistent size | **Parent-Child** | Children are fixed-size by design |
 
 ### Key insight
-Fixed chunking boundary score is only 0.04 — meaning 96% of chunks 
-cut mid-sentence. Semantic chunking boundary score is 0.9484 — 
-meaning 94.8% of chunks end at natural topic boundaries. For RAG 
-pipelines where retrieval precision matters, semantic chunking 
-produces dramatically more coherent context windows despite being 
-3x more expensive to compute.
+
+Fixed chunking boundary score is only 0.04 — meaning 96% of chunks cut mid-sentence. Semantic chunking boundary score is 0.9484 — meaning 94.8% of chunks end at natural topic boundaries. For RAG pipelines where retrieval precision matters, semantic chunking produces dramatically more coherent context windows despite being 3x more expensive to compute.
 
 ---
 
 ## Strategies
 
 ### Fixed chunking
-Splits every N characters with overlap. Fast and deterministic 
-but completely ignores sentence and paragraph boundaries.
+Splits every N characters with overlap. Fast and deterministic but completely ignores sentence and paragraph boundaries.
 ```python
 chunker = FixedChunker(config)  # chunk_size=512, overlap=50
 chunks = chunker.chunk_articles(articles)
 ```
 
 ### Recursive chunking
-Tries separators in priority order: `\n\n` → `\n` → `. ` → ` `.
-Always prefers the most natural boundary available.
+Tries separators in priority order: `\n\n` → `\n` → `. ` → ` `. Always prefers the most natural boundary available.
 ```python
 chunker = RecursiveChunker(config)
 chunks = chunker.chunk_articles(articles)
 ```
 
 ### Semantic chunking
-Embeds every sentence using `all-MiniLM-L6-v2`. Cuts a new chunk
-when cosine similarity between consecutive sentences drops below
-threshold (0.7) — meaning the topic has shifted.
+Embeds every sentence using `all-MiniLM-L6-v2`. Cuts a new chunk when cosine similarity between consecutive sentences drops below threshold (0.7) — meaning the topic has shifted.
 ```python
 chunker = SemanticChunker(config)  # breakpoint_threshold=0.7
 chunks = chunker.chunk_articles(articles)
 ```
 
 ### Parent-Child chunking
-Stores two granularities — large parent chunks (512 chars) for 
-LLM context, small child chunks (128 chars) for retrieval. 
-Child chunks match queries precisely; parent chunks give the LLM 
-enough surrounding context to answer well.
+Stores two granularities — large parent chunks (512 chars) for LLM context, small child chunks (128 chars) for retrieval. Child chunks match queries precisely; parent chunks give the LLM enough surrounding context to answer well.
 ```python
 chunker = ParentChildChunker(config)
 all_chunks = chunker.chunk_articles(articles)
 children = chunker.get_children(all_chunks)   # used for retrieval
-parents = chunker.get_parents(all_chunks)     # returned to LLM
+parents  = chunker.get_parents(all_chunks)    # returned to LLM
 ```
 
 ---
@@ -127,6 +115,7 @@ git clone https://github.com/Sonal12061/chunking-strategies-rag
 cd chunking-strategies-rag
 python -m venv venv
 source venv/Scripts/activate    # Windows
+source venv/bin/activate        # Mac/Linux
 pip install -r requirements.txt
 
 # 2. Fetch Wikipedia articles
@@ -135,9 +124,8 @@ python data/fetch_articles.py
 # 3. Run full comparison pipeline
 python run_comparison.py
 
-# 4. Launch dashboard
-streamlit run dashboard/app.py
-"github.com/Sonal12061/chunking | huggingface.co/spaces/sonal1288/chunking"
+# 4. Launch dashboard locally
+streamlit run streamlit_app.py
 ```
 
 ---
@@ -157,15 +145,20 @@ chunking-strategies-rag/
 │   └── evaluator.py         # coherence, boundary, size, overlap metrics
 ├── retrieval/
 │   └── pipeline.py          # ChromaDB indexing + retrieval
-├── dashboard/
-│   └── app.py               # Streamlit comparison dashboard
-├── run_comparison.py        # main orchestration script
-└── logs/                    # evaluation results + ChromaDB
+├── logs/                    # precomputed evaluation results
+├── streamlit_app.py         # Streamlit comparison dashboard
+└── run_comparison.py        # main orchestration script
 ```
+
+---
+
+## Links
+
+- 🚀 Live dashboard: [huggingface.co/spaces/Sonal1288/chunking](https://huggingface.co/spaces/Sonal1288/chunking)
+- 💻 GitHub: [github.com/Sonal12061/chunking-strategies-rag](https://github.com/Sonal12061/chunking-strategies-rag)
 
 ---
 
 ## Tech Stack
 
-`Python` · `LangChain` · `HuggingFace` · `sentence-transformers` · 
-`ChromaDB` · `Streamlit` · `Plotly` · `Wikipedia API`
+`Python` · `HuggingFace` · `sentence-transformers` · `ChromaDB` · `Streamlit` · `Plotly` · `Wikipedia API`
